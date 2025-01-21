@@ -15,6 +15,7 @@
     |----dataset                    # 包含所有文本和图像数据
     |----test_without_label.txt     # 测试集文件，用于预测
     |----train.txt                  # 训练数据，包含样本 guid 和对应的标签
+|----requirements.txt               # 依赖
 |----.gitignore
 |----LICENSE
 |----README.md
