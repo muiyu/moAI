@@ -77,3 +77,7 @@ class BERTweetFusionResNet18_Attn(nn.Module):
 
 ## Infer
 您可以运行 `infer.py` 文件加载测试集并对测试数据集进行预测。运行后会生成 `result.txt` 文件。
+
+## Reference
+PyTorch
+AutoModel
