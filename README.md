@@ -7,9 +7,18 @@
 ```
 |----code
     |----data                       # 数据预处理的代码
+        |----bert.py
     |----exp                        # 消融实验和比较实验使用的代码
+        |----ablation_plus.py
+        |----ablation.py
+        |----contra.py
+    |----infer                      # 预测测试集所用代码
+        |----infer.py
     |----model                      # 模型代码
+        |----resnet18_bert_attn.py
+        |----resnet18_bert_gate.py
     |----train                      # 训练代码
+        |----train.py
     |----main.py                    # 主程序，执行模型训练
 |----data                           # 数据集目录
     |----dataset                    # 包含所有文本和图像数据
@@ -22,6 +31,17 @@
 ```
 
 ## Install
+运行本实验需要安装下列依赖：
+```
+matplotlib==3.10.0
+numpy==2.2.2
+Pillow==11.1.0
+torch==2.5.1
+torchvision==0.20.1
+tqdm==4.66.5
+transformers==4.45.2
+```
+
 为了成功复现本实验，您应当循序如下步骤安装依赖：
 ```
 pip install -r requirements.txt
@@ -51,7 +71,10 @@ class BERTweetFusionResNet18_Attn(nn.Module):
     pass
 ```
 
-您可以在使用 `main.py` 训练时手动指定这些参数。 
+您可以在使用 `main.py` 训练时手动指定这些参数。 例如：
+```
+main.py --epochs 5 --lr 4e-4
+```
 
 ### Plot
 模型训练时会保存训练历史，并在每个 epoch 训练完成后绘制图片。要更改图像名称，您可以在 `train_model()` 函数中使用 `save_path='plot.png'` 参数指定。
@@ -61,13 +84,16 @@ class BERTweetFusionResNet18_Attn(nn.Module):
 
 ## Experienments
 ### `exp.ablation`
-该模块包含执行消融实验的代码，您可以在 `main.py` 中调用它。
+该模块包含执行单模型消融实验的代码，您可以在 `main.py` 中调用它。
 
 如您直接执行该模块，其会在仓库根目录下查找 `best_model.pth` 模型并加载，之后在最佳模型上基于验证集进行一次消融实验。
 
 该模块的主体函数 `run_ablation_experiment()` 会生成消融实验结果柱状图。要指定图片名称和路径，请在 `run_ablation_experiment()` 中使用 `ablation_save_path='ablation.png'` 参数修改。
 
 如您拥有多个模型，也可以使用 `best_model_path='best_model.pth'` 参数指定模型进行消融实验。
+
+### `exp.ablation_plus`
+该模块包含执行多模型消融实验的代码，建议您直接运行该模块：其会自动训练三个模型并进行消融实验比较。
 
 ### `exp.contra`
 该模块包含执行门控机制和注意力机制模型对照实验的代码，您可以在 `main.py` 中调用它。
@@ -77,8 +103,9 @@ class BERTweetFusionResNet18_Attn(nn.Module):
 如您需要指定对比实验的训练参数，您应该在主体函数 `contrast_experienment()` 中使用 `num_epochs` 和 `lr` 参数指定训练超参数。
 
 ## Infer
-您可以运行 `infer.py` 文件加载测试集并对测试数据集进行预测。运行后会生成 `result.txt` 文件。
+您可以运行 `infer.py` 文件加载测试集并对测试数据集进行预测。运行后会生成 `result.txt` 文件。运行该脚本前，需要确保您进行了模型训练并在项目根目录下保存了模型文件，否则需要手动更改模型路径。
 
 ## Reference
 PyTorch
+
 AutoModel
